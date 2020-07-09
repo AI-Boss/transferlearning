@@ -43,7 +43,7 @@ class MMD_loss(nn.Module):
             kernels = self.guassian_kernel(
                 source, target, kernel_mul=self.kernel_mul, kernel_num=self.kernel_num, fix_sigma=self.fix_sigma) # 根据公式将核矩阵分为4个部分
             with torch.no_grad():
-                XX = torch.mean(kernels[:batch_size, :batch_size])
+                XX = torch.mean(kernels[:batch_size, :batch_size]) # 可以将特征维度设置为1，即kernel矩阵为2维方阵，举例可更好理解
                 YY = torch.mean(kernels[batch_size:, batch_size:])
                 XY = torch.mean(kernels[:batch_size, batch_size:])
                 YX = torch.mean(kernels[batch_size:, :batch_size])
