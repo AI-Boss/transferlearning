@@ -15,14 +15,14 @@ def test(model, target_test_loader):
     test_loss = utils.AverageMeter()
     correct = 0
     criterion = torch.nn.CrossEntropyLoss()
-    len_target_dataset = len(target_test_loader.dataset)
+    len_target_dataset = len(target_test_loader.dataset) # 目标域测试集样本个数
     with torch.no_grad():
         for data, target in target_test_loader:
             data, target = data.to(DEVICE), target.to(DEVICE)
             s_output = model.predict(data)
             loss = criterion(s_output, target)
             test_loss.update(loss.item())
-            pred = torch.max(s_output, 1)[1]
+            pred = torch.max(s_output, 1)[1] # 计算s_output每行最大值并取其列索引，即每条数据的概率(max括号里的1为dim=1,max()返回值有两个，分别为值和索引的tensor，[1]为取索引tnesor)
             correct += torch.sum(pred == target)
 
     print('{} --> {}: max correct: {}, accuracy{: .2f}%\n'.format(
