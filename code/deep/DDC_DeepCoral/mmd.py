@@ -42,11 +42,11 @@ class MMD_loss(nn.Module):
             batch_size = int(source.size()[0]) # 一般默认源域和目标域的batchsize相同
             kernels = self.guassian_kernel(
                 source, target, kernel_mul=self.kernel_mul, kernel_num=self.kernel_num, fix_sigma=self.fix_sigma) # 根据公式将核矩阵分为4个部分
-            with torch.no_grad():
+            with torch.no_grad(): # 被包裹的内容在测试时不进行梯度的计算，这样可以在测试时有效减小显存的占用，以免发生显存溢出
                 XX = torch.mean(kernels[:batch_size, :batch_size]) # 可以将特征维度设置为1，即kernel矩阵为2维方阵，举例可更好理解
                 YY = torch.mean(kernels[batch_size:, batch_size:])
                 XY = torch.mean(kernels[:batch_size, batch_size:])
                 YX = torch.mean(kernels[batch_size:, :batch_size])
                 loss = torch.mean(XX + YY - XY - YX) # 因为一般源域与目标域输入数据数量相同(即batchsize相同)，所以L矩阵不加入计算
-            torch.cuda.empty_cache()
+            torch.cuda.empty_cache() # 释放显存
             return loss
