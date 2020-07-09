@@ -10,7 +10,7 @@ class MMD_loss(nn.Module):
         self.fix_sigma = None # 高斯核的sigma值
         self.kernel_type = kernel_type # 核类型
 
-    def guassian_kernel(self, source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None): # 高斯核
+    def guassian_kernel(self, source, target, kernel_mul=2.0, kernel_num=5, fix_sigma=None): # 高斯核，source.shape:(n, len(x)); target.shape:(m, len(y))
         n_samples = int(source.size()[0]) + int(target.size()[0])
         total = torch.cat([source, target], dim=0)
         total0 = total.unsqueeze(0).expand(
