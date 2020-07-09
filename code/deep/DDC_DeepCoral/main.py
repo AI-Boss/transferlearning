@@ -45,7 +45,7 @@ def train(source_loader, target_train_loader, target_test_loader, model, optimiz
             data_source, label_source = iter_source.next()
             data_target, _ = iter_target.next()
             data_source, label_source = data_source.to(
-                DEVICE), label_source.to(DEVICE)
+                    DEVICE), label_source.to(DEVICE) # 把数据copy一份在DEVICE指定的GPU或CPU上运行
             data_target = data_target.to(DEVICE)
 
             optimizer.zero_grad()
