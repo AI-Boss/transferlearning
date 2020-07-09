@@ -38,11 +38,11 @@ def train(source_loader, target_train_loader, target_test_loader, model, optimiz
         train_loss_total = utils.AverageMeter()
         model.train()
         iter_source, iter_target = iter(
-            source_loader), iter(target_train_loader)
+            source_loader), iter(target_train_loader) # source_loader和target_train_loader均为iterable，使用iter函数将其变为iterator
         n_batch = min(len_source_loader, len_target_loader)
         criterion = torch.nn.CrossEntropyLoss()
         for i in range(n_batch):
-            data_source, label_source = iter_source.next()
+            data_source, label_source = iter_source.next() # 对应iter操作
             data_target, _ = iter_target.next()
             data_source, label_source = data_source.to(
                     DEVICE), label_source.to(DEVICE) # 把数据copy一份在DEVICE指定的GPU或CPU上运行
