@@ -82,23 +82,23 @@ def load_data(src, tar, root_dir):
 
 
 if __name__ == '__main__':
-    torch.manual_seed(0)
+    torch.manual_seed(0) # 随机数种子
 
     source_name = "amazon"
     target_name = "webcam"
 
-    print('Src: %s, Tar: %s' % (source_name, target_name))
+    print('Src: %s, Tar: %s' % (source_name, target_name)) # 打印源域与目标域域名
 
     source_loader, target_train_loader, target_test_loader = load_data(
-        source_name, target_name, CFG['data_path'])
+        source_name, target_name, CFG['data_path']) # 加载数据
 
     model = models.Transfer_Net(
-        CFG['n_class'], transfer_loss='mmd', base_net='resnet50').to(DEVICE)
+        CFG['n_class'], transfer_loss='mmd', base_net='resnet50').to(DEVICE) # 确定模型
     optimizer = torch.optim.SGD([
         {'params': model.base_network.parameters()},
         {'params': model.bottleneck_layer.parameters(), 'lr': 10 * CFG['lr']},
         {'params': model.classifier_layer.parameters(), 'lr': 10 * CFG['lr']},
-    ], lr=CFG['lr'], momentum=CFG['momentum'], weight_decay=CFG['l2_decay'])
+    ], lr=CFG['lr'], momentum=CFG['momentum'], weight_decay=CFG['l2_decay']) # 设置优化器参数
 
     train(source_loader, target_train_loader,
-          target_test_loader, model, optimizer, CFG)
+          target_test_loader, model, optimizer, CFG) # 训练模型 
